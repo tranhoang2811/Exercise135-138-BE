@@ -5,12 +5,20 @@ import morgan from "morgan";
 import mongoose from "mongoose";
 import router from "./routes";
 import { DB_CONNECT_STRING, PORT } from "./config";
+import { IProductInCart } from "./interfaces/product";
+
+declare module "express-session" {
+  interface SessionData {
+    cart: IProductInCart[];
+    visited: number;
+  }
+}
 
 const app: Express = express();
 
 app.use(morgan("short"));
 app.listen(PORT ?? 3000, () => console.log(`Listening on port ${PORT}`));
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
 app.use(session({ secret: "secret" }));
 app.use(router);

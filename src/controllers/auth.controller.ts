@@ -78,12 +78,10 @@ export async function getLoginInformation(
 
 // *INFO: This function is used for exercise 137
 export function visitPage(request: Request, response: Response): Response {
-  if ((request.session as any).visited) {
-    (request.session as any).visited++;
-    return response.send(
-      "Visited " + (request.session as any).visited + " times"
-    );
+  if (request.session.visited) {
+    request.session.visited++;
+    return response.send("Visited " + request.session.visited + " times");
   }
-  (request.session as any).visited = 1;
+  request.session.visited = 1;
   return response.send("Welcome to this page for the first time!");
 }
